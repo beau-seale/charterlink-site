@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charterlink | Private Charter Enquiry</title>
+  <style>
+    :root {
+      --bg: #07101f;
+      --bg-2: #0b1730;
+      --panel: rgba(13, 25, 49, 0.78);
+      --panel-border: rgba(255,255,255,0.1);
+      --text: #f4f7fb;
+      --muted: #aeb9cd;
+      --accent: #e9edf5;
+      --accent-dark: #101a2f;
+      --input: rgba(255,255,255,0.04);
+      --shadow: 0 18px 60px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(65, 104, 196, 0.24), transparent 28%),
+        radial-gradient(circle at top right, rgba(23, 60, 129, 0.18), transparent 20%),
+        linear-gradient(180deg, #040914 0%, #07101f 40%, #050b16 100%);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(16px);
+      background: rgba(4, 10, 22, 0.82);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid rgba(255,255,255,0.12);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex: 0 0 auto;
+      padding: 8px;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.07);
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: clamp(1.15rem, 1rem + 1vw, 1.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-copy p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: clamp(0.9rem, 0.85rem + 0.4vw, 1.05rem);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 28px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--accent-dark);
+      font-weight: 700;
+      border: 0;
+      cursor: pointer;
+      transition: transform 0.18s ease;
+      white-space: nowrap;
+      box-shadow: var(--shadow);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      padding: 60px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 36px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .form-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(20,32,62,0.78), rgba(8,16,31,0.86));
+      border: 1px solid var(--panel-border);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-card {
+      min-height: 640px;
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-card::before,
+    .form-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(88, 128, 232, 0.12), transparent 38%, transparent 65%, rgba(255,255,255,0.02));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: #dce5f5;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .hero h2 {
+      margin: 24px 0 16px;
+      font-size: clamp(2rem, 1.4rem + 2vw, 4rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      max-width: 9ch;
+    }
+
+    .hero p.lead {
+      margin: 0;
+      max-width: 42ch;
+      color: #c3d0e4;
+      font-size: clamp(1rem, 0.95rem + 0.45vw, 1.18rem);
+      line-height: 1.7;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .point {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .point strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .point span {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .form-card {
+      padding: 40px;
+    }
+
+    .form-card h3 {
+      margin: 0;
+      font-size: clamp(1.7rem, 1.45rem + 1vw, 2.5rem);
+      letter-spacing: -0.04em;
+    }
+
+    .form-card .intro {
+      margin: 14px 0 30px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 50ch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .field,
+    .field-full {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .field-full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: #f0f4fb;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: var(--input);
+      color: var(--text);
+      border-radius: 20px;
+      padding: 18px 20px;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.16s ease, background 0.16s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #8f9cb0;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.06);
+    }
+
+    textarea {
+      min-height: 145px;
+      resize: vertical;
+    }
+
+    .submit-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .submit-btn {
+      min-width: 220px;
+      padding: 18px 28px;
+      border-radius: 999px;
+      border: 0;
+      background: var(--accent);
+      color: var(--accent-dark);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.6;
+      max-width: 45ch;
+    }
+
+    .footer-note {
+      padding: 0 0 32px;
+      color: #8393aa;
+      font-size: 0.88rem;
+      text-align: center;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        min-height: 520px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .nav {
+        padding: 12px 0;
+      }
+
+      .brand-logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+      }
+
+      .cta-button {
+        padding: 14px 18px;
+      }
+
+      .hero {
+        padding-top: 28px;
+      }
+
+      .hero-card,
+      .form-card {
+        border-radius: 24px;
+        padding: 24px;
+      }
+
+      .hero-points,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Charterlink home">
+        <div class="brand-logo">
+          <img src="logo.png" alt="Charterlink logo" />
+        </div>
+        <div class="brand-copy">
+          <h1>Charterlink</h1>
+          <p>Private charter coordination for fast, flexible travel</p>
+        </div>
+      </a>
+      <a class="cta-button" href="#quote-form">Request a quote</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <section class="hero-card" aria-label="Charterlink overview">
+          <div>
+            <div class="eyebrow">Fast private charter enquiries</div>
+            <h2>Private charter coordination made simple.</h2>
+            <p class="lead">
+              Charterlink helps businesses and private clients request aircraft options quickly through licensed operators.
+              Share your trip details below and we will review your enquiry.
+            </p>
+
+            <div class="hero-points">
+              <div class="point">
+                <strong>Fast turnaround</strong>
+                <span>Submit your route, timing and passenger details in minutes.</span>
+              </div>
+              <div class="point">
+                <strong>Flexible travel</strong>
+                <span>Useful for regional, urgent and point-to-point movements.</span>
+              </div>
+              <div class="point">
+                <strong>Clear details</strong>
+                <span>The form collects the info needed to assess your request properly.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-card" id="quote-form" aria-label="Private charter enquiry form">
+          <h3>Private charter enquiry</h3>
+          <p class="intro">
+            Complete the form below and Charterlink will prepare your enquiry email to <strong>ops@charterlink.com.au</strong>.
+          </p>
+
+          <form id="charterForm">
+            <div class="grid">
+              <div class="field">
+                <label for="fullName">Full name</label>
+                <input id="fullName" name="fullName" type="text" placeholder="Your full name" required />
+              </div>
+
+              <div class="field">
+                <label for="company">Company</label>
+                <input id="company" name="company" type="text" placeholder="Company name" />
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="name@company.com" required />
+              </div>
+
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" placeholder="Best contact number" required />
+              </div>
+
+              <div class="field">
+                <label for="departure">Departure</label>
+                <input id="departure" name="departure" type="text" placeholder="Airport or location" required />
+              </div>
+
+              <div class="field">
+                <label for="destination">Destination</label>
+                <input id="destination" name="destination" type="text" placeholder="Airport or location" required />
+              </div>
+
+              <div class="field">
+                <label for="departureDate">Departure date</label>
+                <input id="departureDate" name="departureDate" type="date" required />
+              </div>
+
+              <div class="field">
+                <label for="departureTime">Preferred departure time</label>
+                <input id="departureTime" name="departureTime" type="time" />
+              </div>
+
+              <div class="field">
+                <label for="passengers">Passengers</label>
+                <input id="passengers" name="passengers" type="number" min="1" step="1" placeholder="Number of passengers" required />
+              </div>
+
+              <div class="field">
+                <label for="tripType">Trip type</label>
+                <select id="tripType" name="tripType">
+                  <option value="One way">One way</option>
+                  <option value="Return">Return</option>
+                  <option value="Multi-leg">Multi-leg</option>
+                  <option value="Unsure">Unsure</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="returnDate">Return date</label>
+                <input id="returnDate" name="returnDate" type="date" />
+              </div>
+
+              <div class="field">
+                <label for="baggage">Baggage</label>
+                <input id="baggage" name="baggage" type="text" placeholder="Bags, equipment, special items" />
+              </div>
+            </div>
+
+            <div class="field-full">
+              <label for="notes">Additional details</label>
+              <textarea id="notes" name="notes" placeholder="Preferred aircraft type, flexibility, urgent timing, special requirements or anything else useful."></textarea>
+            </div>
+
+            <div class="submit-row">
+              <button class="submit-btn" type="submit">Send enquiry email</button>
+              <div class="helper">
+                This version opens a pre-filled email to send to <strong>ops@charterlink.com.au</strong> using the visitor’s email app.
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="container footer-note">
+    Charterlink arranges private charter enquiries through licensed operators. Charterlink does not operate aircraft.
+  </div>
+
+  <script>
+    const form = document.getElementById('charterForm');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const data = {
+        fullName: document.getElementById('fullName').value.trim(),
+        company: document.getElementById('company').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        departure: document.getElementById('departure').value.trim(),
+        destination: document.getElementById('destination').value.trim(),
+        departureDate: document.getElementById('departureDate').value.trim(),
+        departureTime: document.getElementById('departureTime').value.trim(),
+        passengers: document.getElementById('passengers').value.trim(),
+        tripType: document.getElementById('tripType').value,
+        returnDate: document.getElementById('returnDate').value.trim(),
+        baggage: document.getElementById('baggage').value.trim(),
+        notes: document.getElementById('notes').value.trim()
+      };
+
+      const subject = `Charterlink Enquiry | ${data.departure} to ${data.destination} | ${data.departureDate}`;
+
+      const body = [
+        'New Charterlink enquiry',
+        '',
+        `Full name: ${data.fullName}`,
+        `Company: ${data.company || 'N/A'}`,
+        `Email: ${data.email}`,
+        `Phone: ${data.phone}`,
+        '',
+        `Departure: ${data.departure}`,
+        `Destination: ${data.destination}`,
+        `Departure date: ${data.departureDate}`,
+        `Preferred departure time: ${data.departureTime || 'N/A'}`,
+        `Passengers: ${data.passengers}`,
+        `Trip type: ${data.tripType}`,
+        `Return date: ${data.returnDate || 'N/A'}`,
+        `Baggage: ${data.baggage || 'N/A'}`,
+        '',
+        'Additional details:',
+        data.notes || 'N/A'
+      ].join('\n');
+
+      const mailtoLink = `mailto:ops@charterlink.com.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoLink;
+    });
+  </script>
+</body>
+</html>
